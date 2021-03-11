@@ -24,12 +24,17 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -328,8 +333,8 @@ public class Mojang {
         JSONObject obj = null;
 
         try {
-            //URL url = new URL("https://" + header.getResource().substring(8));
-            //System.out.println("https://" + header.getResource().substring(8) + " // " + url.toString());
+
+
             HttpsURLConnection con = (HttpsURLConnection) new URL(url).openConnection();
 
 
@@ -389,5 +394,38 @@ public class Mojang {
         }
 
         return arr;
+    }
+
+    static {
+        init();
+    }
+
+    private static void init() {
+        TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+            @Override
+            public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+
+            }
+
+            @Override
+            public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+
+            }
+
+            @Override
+            public X509Certificate[] getAcceptedIssuers() {
+                return null;
+            }
+        }
+        };
+        try {
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustAllCerts, new SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            e.printStackTrace();
+        }
+        HostnameVerifier validHosts = (s, sslSession) -> s.equalsIgnoreCase("api.mojang.com") || s.equalsIgnoreCase("sessionserver.mojang.com") || s.equalsIgnoreCase("account.mojang.com") || s.equalsIgnoreCase("authserver.mojang.com") || s.equalsIgnoreCase("skins.minecraft.net") || s.equalsIgnoreCase("textures.minecraft.net");
+        HttpsURLConnection.setDefaultHostnameVerifier(validHosts);
     }
 }
