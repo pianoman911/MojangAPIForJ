@@ -337,6 +337,10 @@ public class Mojang {
 
             HttpsURLConnection con = (HttpsURLConnection) new URL(url).openConnection();
 
+            for (String s : con.getHeaderFields().keySet()) {
+                System.out.println(s);
+            }
+
 
             int responseCode = con.getResponseCode();
             BufferedReader apiReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
