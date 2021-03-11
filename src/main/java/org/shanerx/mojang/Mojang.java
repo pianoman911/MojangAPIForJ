@@ -339,11 +339,23 @@ public class Mojang {
 
             for (String s : con.getHeaderFields().keySet()) {
                 System.out.println("-----[" + s + "]------------");
-                for(String x : con.getHeaderFields().get(s)){
+                for (String x : con.getHeaderFields().get(s)) {
                     System.out.println(x);
                 }
-                System.out.println("----------------------------");
+
             }
+            System.out.println("----------------------------");
+            System.out.println();
+            System.out.println(con.getRequestMethod());
+            System.out.println();
+            for (String s : con.getRequestProperties().keySet()) {
+                System.out.println("-----[" + s + "]------------");
+                for (String x : con.getRequestProperties().get(s)) {
+                    System.out.println(x);
+                }
+            }
+            System.out.println("----------------------------");
+
 
 
             int responseCode = con.getResponseCode();
