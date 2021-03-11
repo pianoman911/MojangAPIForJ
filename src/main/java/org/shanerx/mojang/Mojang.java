@@ -344,7 +344,6 @@ public class Mojang {
             String inputLine;
             List<String> inLines = new ArrayList<>();
             while ((inputLine = apiReader.readLine()) != null) {
-                System.out.println(inputLine);
                 inLines.add(inputLine);
             }
             apiReader.close();
@@ -377,7 +376,6 @@ public class Mojang {
             String inputLine;
             List<String> inLines = new ArrayList<>();
             while ((inputLine = apiReader.readLine()) != null) {
-                System.out.println(inputLine);
                 inLines.add(inputLine);
             }
             apiReader.close();
