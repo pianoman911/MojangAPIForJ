@@ -6,7 +6,7 @@
 
     <groupId>org.shanerx</groupId>
     <artifactId>java-mojang-api</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <version>1.4-SNAPSHOT</version>
     <url>http://wiki.vg/Mojang_API</url>
     <name>Java Mojang API</name>
 

@@ -338,7 +338,11 @@ public class Mojang {
             HttpsURLConnection con = (HttpsURLConnection) new URL(url).openConnection();
 
             for (String s : con.getHeaderFields().keySet()) {
-                System.out.println(s);
+                System.out.println("-----[" + s + "]------------");
+                for(String x : con.getHeaderFields().get(s)){
+                    System.out.println(x);
+                }
+                System.out.println("----------------------------");
             }
 
 
