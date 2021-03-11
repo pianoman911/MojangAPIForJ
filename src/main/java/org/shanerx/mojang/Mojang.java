@@ -357,7 +357,6 @@ public class Mojang {
             System.out.println("----------------------------");
 
 
-
             int responseCode = con.getResponseCode();
             BufferedReader apiReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
@@ -375,6 +374,7 @@ public class Mojang {
             }
 
             obj = (JSONObject) new JSONParser().parse(responseBody.toString());
+            con.disconnect();
 
         } catch (IOException | ParseException exception) {
             exception.printStackTrace();
