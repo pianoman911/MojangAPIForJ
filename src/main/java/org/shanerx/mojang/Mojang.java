@@ -70,6 +70,13 @@ public class Mojang {
         Mojang.redisExpire = redisExpire;
     }
 
+    public Mojang(RedisClient client, long redisExpire) {
+        apiStatus = new HashMap<>();
+        redisConnection = client.connect();
+        redisCommands = redisConnection.sync();
+        Mojang.redisExpire = redisExpire;
+    }
+
     public void close() {
         redisConnection.close();
     }
