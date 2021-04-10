@@ -24,113 +24,115 @@ import java.util.Set;
 /**
  * This class contains the fields that represent the metadata of a player account and the methods to interact with it.
  */
+
+@SuppressWarnings("unused")
 public class PlayerProfile {
 
-	private String uuid;
-	private String username;
-	private Set<Property> properties;
-	private Optional<TexturesProperty> textures;
+    private final String uuid;
+    private final String username;
+    private final Set<Property> properties;
+    private final Optional<TexturesProperty> textures;
 
-	/**
-	 * Represents a property.
-	 */
-	public static class Property {
-		String name;
-		String value;
-		String signature;
-		
-		public String getName() {
-			return name;
-		}
-		
-		public String getValue() {
-			return value;
-		}
-		
-		public String getSignature() {
-			return signature;
-		}
-	}
-	
-	public static class TexturesProperty extends Property {
-		long timestamp;
-		String profileId, profileName;
-		boolean signatureRequired = false;
-		Map<String, URL> textures;
-		
-		public long getTimestamp() {
-			return timestamp;
-		}
+    /**
+     * Represents a property.
+     */
+    public static class Property {
+        String name;
+        String value;
+        String signature;
 
-		public String getProfileId() {
-			return profileId;
-		}
+        public String getName() {
+            return name;
+        }
 
-		public String getProfileName() {
-			return profileName;
-		}
+        public String getValue() {
+            return value;
+        }
 
-		public boolean isSignatureRequired() {
-			return signatureRequired;
-		}
+        public String getSignature() {
+            return signature;
+        }
+    }
 
-		public Map<String, URL> getTextures() {
-			return textures;
-		}
+    public static class TexturesProperty extends Property {
+        long timestamp;
+        String profileId, profileName;
+        boolean signatureRequired = false;
+        Map<String, URL> textures;
 
-		public Optional<URL> getSkin() {
-			return Optional.ofNullable(textures.get("SKIN"));
-		}
-		
-		public Optional<URL> getCape() {
-			return Optional.ofNullable(textures.get("CAPE"));
-		}
-	}
+        public long getTimestamp() {
+            return timestamp;
+        }
 
-	/**
-	 * <p>Constructor for the class.
-	 * <p>You may use {@code new Mojang().connect().getPlayerProfile(uuid)} to retrieve the instance as it will verify the validity of the parameters.
-	 *
-	 * @param uuid the UUID of the player this object should represent
-	 * @param username the username of said player (you may use {@code new Mojang().connect().getNameHistoryOfPlayer(uuid)} to retrieve it).
-	 * @param properties the properties for that player. Depends on what you wish to do with the object
-	 */
-	public PlayerProfile(String uuid, String username, Set<Property> properties) {
-		this.uuid = uuid;
-		this.username = username;
-		this.properties = properties;
-		this.textures = properties.stream().filter(p -> p.getName().equals("textures")).map(p -> (TexturesProperty) p).findAny();
-	}
+        public String getProfileId() {
+            return profileId;
+        }
 
-	/**
-	 * Gets the UUID of the player.
-	 *
-	 * @return the uuid as a {@link java.lang.String String}
-	 */
-	public String getUUID() {
-		return uuid;
-	}
+        public String getProfileName() {
+            return profileName;
+        }
 
-	/**
-	 * Gets the username of the player.
-	 *
-	 * @return the username as a {@link java.lang.String String}
-	 */
-	public String getUsername() {
-		return username;
-	}
+        public boolean isSignatureRequired() {
+            return signatureRequired;
+        }
 
-	/**
-	 * <p>Returns the properties this object has.
-	 * <p>This method exists for transparency, as the properties set is used internally.
-	 *
-	 * @return the properties {@link java.util.Set Set}
-	 */
-	public Set<Property> getProperties() {
-		return properties;
-	}
-	
-	public Optional<TexturesProperty> getTextures() {
-		return textures;
-	}
+        public Map<String, URL> getTextures() {
+            return textures;
+        }
+
+        public Optional<URL> getSkin() {
+            return Optional.ofNullable(textures.get("SKIN"));
+        }
+
+        public Optional<URL> getCape() {
+            return Optional.ofNullable(textures.get("CAPE"));
+        }
+    }
+
+    /**
+     * <p>Constructor for the class.
+     * <p>You may use {@code new Mojang().connect().getPlayerProfile(uuid)} to retrieve the instance as it will verify the validity of the parameters.
+     *
+     * @param uuid       the UUID of the player this object should represent
+     * @param username   the username of said player (you may use {@code new Mojang().connect().getNameHistoryOfPlayer(uuid)} to retrieve it).
+     * @param properties the properties for that player. Depends on what you wish to do with the object
+     */
+    public PlayerProfile(String uuid, String username, Set<Property> properties) {
+        this.uuid = uuid;
+        this.username = username;
+        this.properties = properties;
+        this.textures = properties.stream().filter(p -> p.getName().equals("textures")).map(p -> (TexturesProperty) p).findAny();
+    }
+
+    /**
+     * Gets the UUID of the player.
+     *
+     * @return the uuid as a {@link java.lang.String String}
+     */
+    public String getUUID() {
+        return uuid;
+    }
+
+    /**
+     * Gets the username of the player.
+     *
+     * @return the username as a {@link java.lang.String String}
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * <p>Returns the properties this object has.
+     * <p>This method exists for transparency, as the properties set is used internally.
+     *
+     * @return the properties {@link java.util.Set Set}
+     */
+    public Set<Property> getProperties() {
+        return properties;
+    }
+
+    public Optional<TexturesProperty> getTextures() {
+        return textures;
+    }
 }

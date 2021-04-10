@@ -22,9 +22,9 @@ package org.shanerx.mojang;
 @SuppressWarnings("unused")
 public class SalesStats {
 
-	private int total;
-	private int last24hrs;
-	private int salesPerSec;
+	private final int total;
+	private final int last24hrs;
+	private final int salesPerSec;
 	
 	protected SalesStats(int total, int last24hrs, int salesPerSec) {
 		this.total = total;
