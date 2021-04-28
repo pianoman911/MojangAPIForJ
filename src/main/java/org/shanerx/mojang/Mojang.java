@@ -18,9 +18,6 @@ package org.shanerx.mojang;
 
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import io.lettuce.core.RedisClient;
-import io.lettuce.core.api.StatefulRedisConnection;
-import io.lettuce.core.api.sync.RedisCommands;
 import org.apache.commons.codec.binary.Base64;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -51,8 +48,6 @@ import java.util.stream.Stream;
 public class Mojang {
 
     private final Map<String, ServiceStatus> apiStatus;
-    private static StatefulRedisConnection<String, String> redisConnection;
-    private static RedisCommands<String, String> redisCommands;
     private static long redisExpire;
 
     /**
@@ -60,25 +55,6 @@ public class Mojang {
      */
     public Mojang() {
         apiStatus = new HashMap<>();
-    }
-
-    public Mojang(int redisPort, short redisDB, long redisExpire) {
-        apiStatus = new HashMap<>();
-        RedisClient redisClient = RedisClient.create("redis://127.0.0.1:" + redisPort + "/" + redisDB);
-        redisConnection = redisClient.connect();
-        redisCommands = redisConnection.sync();
-        Mojang.redisExpire = redisExpire;
-    }
-
-    public Mojang(RedisClient client, long redisExpire) {
-        apiStatus = new HashMap<>();
-        redisConnection = client.connect();
-        redisCommands = redisConnection.sync();
-        Mojang.redisExpire = redisExpire;
-    }
-
-    public void close() {
-        redisConnection.close();
     }
 
     /**
@@ -354,18 +330,8 @@ public class Mojang {
     }
 
     private static JSONObject getJSONObject(String url) {
-        if (redisCommands != null) {
-            String rawString = redisCommands.get("mojangcache.object|" + url);
-            if (rawString != null && !rawString.isEmpty()) {
-                try {
-                    return (JSONObject) new JSONParser().parse(rawString);
-                } catch (ParseException exception) {
-                    exception.printStackTrace();
-                }
-            }
-        }
-        JSONObject obj = null;
 
+        JSONObject obj = null;
         try {
 
 
@@ -388,8 +354,6 @@ public class Mojang {
             }
             String responseBodyString = responseBody.toString();
             obj = (JSONObject) new JSONParser().parse(responseBodyString);
-            if (redisCommands != null)
-                redisCommands.setex("mojangcache.object|" + url, redisExpire, responseBodyString);
             con.disconnect();
 
         } catch (IOException | ParseException exception) {
@@ -400,16 +364,6 @@ public class Mojang {
     }
 
     private static JSONArray getJSONArray(String url) {
-        if (redisCommands != null) {
-            String rawString = redisCommands.get("mojangcache.array|" + url);
-            if (rawString != null && !rawString.isEmpty()) {
-                try {
-                    return (JSONArray) new JSONParser().parse(rawString);
-                } catch (ParseException exception) {
-                    exception.printStackTrace();
-                }
-            }
-        }
         JSONArray arr = null;
 
         try {
@@ -432,7 +386,6 @@ public class Mojang {
             }
             String responseBodyString = responseBody.toString();
             arr = (JSONArray) new JSONParser().parse(responseBodyString);
-            if (redisCommands != null) redisCommands.setex("mojangcache.array|" + url, redisExpire, responseBodyString);
         } catch (ParseException | MalformedURLException e) {
             throw new RuntimeException(e);
         } catch (IOException exception) {
