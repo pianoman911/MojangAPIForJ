@@ -6,7 +6,7 @@
 
     <groupId>org.shanerx</groupId>
     <artifactId>java-mojang-api</artifactId>
-    <version>1.10-RedisCache</version>
+    <version>1.10-rediscache</version>
     <url>http://wiki.vg/Mojang_API</url>
     <name>Java Mojang API | forked by pianoman911</name>
 
@@ -79,11 +79,11 @@
     <distributionManagement>
         <repository>
             <id>gitlab-maven</id>
-            <url>https://gitlab.com/api/v4/projects/24992311/packages/maven</url>
+            <url>https://gitlab.com/api/v4/projects/26247315/packages/maven</url>
         </repository>
         <snapshotRepository>
             <id>gitlab-maven</id>
-            <url>https://gitlab.com/api/v4/projects/24992311/packages/maven</url>
+            <url>https://gitlab.com/api/v4/projects/26247315/packages/maven</url>
         </snapshotRepository>
     </distributionManagement>
 
